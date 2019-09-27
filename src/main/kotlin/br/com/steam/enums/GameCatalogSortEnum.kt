@@ -29,5 +29,11 @@ enum class GameCatalogSortEnum(val description: String, val query: Query) {
             Query().with(PageRequest.of(0, 10, Sort(Sort.Direction.DESC,
                     ConstDocumentField.AVERAGE_PLAY_TIME)))
                     .addCriteria(Criteria.where("genres").`is`("RPG"))
+                    .addCriteria(Criteria.where("hasEnglishSupport").`is`("1"))),
+
+    MULTI_PLAYER(I18n.MULTI_PLAYER.value,
+            Query().with(PageRequest.of(0, 10, Sort(Sort.Direction.DESC,
+                    ConstDocumentField.AVERAGE_PLAY_TIME)))
+                    .addCriteria(Criteria.where("categories").`is`("Multi-player"))
                     .addCriteria(Criteria.where("hasEnglishSupport").`is`("1")))
 }

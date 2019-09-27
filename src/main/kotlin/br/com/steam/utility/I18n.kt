@@ -8,5 +8,6 @@ enum class I18n(val value: String) {
     RECENT_RELEASES(Translator.toLocale("recent.releases")),
     MOST_PLAYED_FREE_GAMES(Translator.toLocale("most.played.free.games")),
     MOST_PLAYED_RPG_GAMES(Translator.toLocale("most.played.rpg.games")),
+    MULTI_PLAYER(Translator.toLocale("multi.player")),
 
 }
