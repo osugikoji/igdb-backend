@@ -19,4 +19,7 @@ object ConstDocumentField {
 
     /** Campo data de lançamento do documento [br.com.steam.documents.GameDetails.releaseDate] */
     const val RELEASE_DATE = "release_date"
+
+    /** Campo média jogado [br.com.steam.documents.GameDetails.averagePlayTime] */
+    const val AVERAGE_PLAY_TIME = "averagePlayTime"
 }

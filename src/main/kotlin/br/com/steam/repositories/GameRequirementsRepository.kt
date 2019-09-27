@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.Query
 interface GameRequirementsRepository : MongoRepository<GameRequirements, String> {
 
     @Query("{'steam_appid' : ?0 }")
-    fun findByGameDetailsId(gameDetailsId: String): GameRequirements?
+    fun findByGameDetailsId(gameDetailsId: String?): GameRequirements?
 
 }
