@@ -12,7 +12,7 @@ data class GameDTO(
         private val gameSupport: GameSupport? = null,
 
         val name: String? = gameDetails?.name,
-        val description: String? = gameDescription?.description,
+        val description: String? = gameDescription?.shortDescription,
         val releaseDate: String? = gameDetails?.releaseDate?.parseToDate(),
         val developer: String? = gameDetails?.developer,
         val publisher: String? = gameDetails?.publisher,
