@@ -1,7 +1,7 @@
 package br.com.steam.dto
 
 import br.com.steam.documents.*
-import br.com.steam.utility.parseToDate
+import br.com.steam.utility.extensions.parseToDate
 import java.math.BigDecimal
 
 data class GameDTO(

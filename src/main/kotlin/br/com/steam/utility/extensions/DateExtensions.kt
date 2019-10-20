@@ -1,4 +1,4 @@
-package br.com.steam.utility
+package br.com.steam.utility.extensions
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
