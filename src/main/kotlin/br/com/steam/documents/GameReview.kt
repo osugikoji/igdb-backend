@@ -9,18 +9,18 @@ import java.util.*
 @Document("steam_reviews")
 data class GameReview(
         @Id
-        val id: String,
+        val id: String?,
         @Field("date_posted")
         @JsonFormat(pattern = "dd/MM/yyyy")
         val datePosted: Date?,
-        val negative: Int,
-        val positive: Int,
+        val negative: Long?,
+        val positive: Long?,
         @Field("hour_played")
-        val hourPlayed: Int,
+        val hourPlayed: Long?,
         @Field("is_early_access_review")
         val isEarlyAccessReview: Boolean,
-        val recommendation: String,
-        val review: String,
+        val recommendation: String?,
+        val review: String?,
         @Field("title")
-        val gameTitle: String
+        val gameTitle: String?
 )
