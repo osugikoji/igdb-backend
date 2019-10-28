@@ -1,6 +1,7 @@
 package br.com.steam.controllers
 
 import br.com.steam.dto.GameCatalogDTO
+import br.com.steam.dto.GameDTO
 import br.com.steam.dto.GameReviewDTO
 import br.com.steam.dto.GameReviewSearchDTO
 import br.com.steam.services.interfaces.GameService
@@ -21,5 +22,13 @@ class GameCatalogController constructor(
     @PostMapping("/reviews")
     fun getAllGameReview(@RequestBody gameReviewSearchDTO: GameReviewSearchDTO): ResponseEntity<List<GameReviewDTO>> {
         return ResponseEntity.ok(gameService.getAllGameReview(gameReviewSearchDTO))
+    }
+
+    @GetMapping("/search")
+    fun getGames(@RequestParam(value = "key") key: Int,
+                 @RequestParam(value = "value") value: String,
+                 @RequestParam(value = "size") size: Int,
+                 @RequestParam(value = "page") page: Int): ResponseEntity<List<GameDTO>> {
+        return ResponseEntity.ok(gameService.getGames(key, value, size, page))
     }
 }

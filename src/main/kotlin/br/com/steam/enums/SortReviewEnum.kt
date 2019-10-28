@@ -1,6 +1,6 @@
 package br.com.steam.enums
 
-enum class SortEnum() {
+enum class SortReviewEnum() {
 
     RECENT(),
 
@@ -12,7 +12,7 @@ enum class SortEnum() {
 
     companion object {
 
-        fun getByName(name: String): SortEnum? =
+        fun getByName(name: String): SortReviewEnum? =
                 values().find { feedback -> feedback.name == name }
 
     }

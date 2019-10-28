@@ -7,7 +7,8 @@ import br.com.steam.dto.GameDTO
 import br.com.steam.dto.GameReviewDTO
 import br.com.steam.dto.GameReviewSearchDTO
 import br.com.steam.enums.GameCatalogSortEnum
-import br.com.steam.enums.SortEnum
+import br.com.steam.enums.SearchByEnum
+import br.com.steam.enums.SortReviewEnum
 import br.com.steam.repositories.*
 import br.com.steam.services.interfaces.GameService
 import br.com.steam.utility.extensions.getDTO
@@ -34,23 +35,27 @@ class GameServiceImpl constructor(
             GameCatalogSortEnum.values().map { enum -> buildGameCatalog(enum) }
 
     private fun buildGameCatalog(gameCatalogSortEnum: GameCatalogSortEnum): GameCatalogDTO {
-        val gameDTOList = mongoTemplate.find(gameCatalogSortEnum.query, GameDetails::class.java, "steam").map { gameDetails ->
+        val gameList = mongoTemplate.find(gameCatalogSortEnum.query, GameDetails::class.java, "steam")
+        val gameDTOList = buildGameDTOList(gameList)
+        return GameCatalogDTO(gameCatalogSortEnum.description, gameDTOList)
+    }
+
+    private fun buildGameDTOList(gameList: List<GameDetails>): List<GameDTO> {
+        return gameList.map { gameDetails ->
             val gameDescription = gameDescriptionRepository.findByGameDetailsId(gameDetails.id)
             val gameMedia = gameMediaRepository.findByGameDetailsId(gameDetails.id)
             val gameRequirements = gameRequirementsRepository.findByGameDetailsId(gameDetails.id)
             val gameSupport = gameSupportRepository.findByGameDetailsId(gameDetails.id)
             GameDTO(gameDetails, gameDescription, gameRequirements, gameMedia, gameSupport)
         }.toList()
-
-        return GameCatalogDTO(gameCatalogSortEnum.description, gameDTOList)
     }
 
     override fun getAllGameReview(gameReviewSearchDTO: GameReviewSearchDTO): List<GameReviewDTO> {
-        val sort = when (SortEnum.getByName(gameReviewSearchDTO.sortEnum)) {
-            SortEnum.RECENT -> Sort(Sort.Direction.DESC, "date_posted")
-            SortEnum.OLD -> Sort(Sort.Direction.ASC, "date_posted")
-            SortEnum.TOP -> Sort(Sort.Direction.DESC, "positive")
-            SortEnum.CONTROVERSIAL -> Sort(Sort.Direction.DESC, "negative")
+        val sort = when (SortReviewEnum.getByName(gameReviewSearchDTO.sortEnum)) {
+            SortReviewEnum.RECENT -> Sort(Sort.Direction.DESC, "date_posted")
+            SortReviewEnum.OLD -> Sort(Sort.Direction.ASC, "date_posted")
+            SortReviewEnum.TOP -> Sort(Sort.Direction.DESC, "positive")
+            SortReviewEnum.CONTROVERSIAL -> Sort(Sort.Direction.DESC, "negative")
             else -> Sort(Sort.Direction.DESC)
         }
 
@@ -65,5 +70,18 @@ class GameServiceImpl constructor(
         val gameReviewDTOList: List<GameReviewDTO>? = gameReviewList.map { gameReview -> gameReview.getDTO() }
 
         return gameReviewDTOList ?: listOf(GameReviewDTO())
+    }
+
+    override fun getGames(key: Int, value: String, size: Int, page: Int): List<GameDTO> {
+        val searchByEnum = SearchByEnum.getById(key) ?: return emptyList()
+
+        val pageable = PageRequest.of(page, size)
+
+        val regex = ".*$value.*"
+        val query = Query().with(pageable).addCriteria(Criteria.where(searchByEnum.key).regex(regex, "i"))
+
+        val gameList = mongoTemplate.find(query, GameDetails::class.java, "steam")
+
+        return buildGameDTOList(gameList)
     }
 }
