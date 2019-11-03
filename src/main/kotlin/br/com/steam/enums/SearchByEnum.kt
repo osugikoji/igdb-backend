@@ -8,7 +8,7 @@ enum class SearchByEnum(val id: Int, val key: String) {
     GENRES(4, "genres");
 
     companion object {
-        fun getById(id: Int): SearchByEnum? = values().find { it.id == id }
+        fun getById(id: Int?): SearchByEnum? = values().find { it.id == id }
     }
 
 }

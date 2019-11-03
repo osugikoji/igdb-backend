@@ -11,6 +11,8 @@ interface GameService {
 
     fun getAllGameReview(gameReviewSearchDTO: GameReviewSearchDTO): List<GameReviewDTO>
 
-    fun getGames(key: Int, value: String, size: Int, page: Int): List<GameDTO>
+    fun getGames(key: String, value: String, size: Int, page: Int): List<GameDTO>
+
+    fun getGames(value: String, size: Int, page: Int): List<GameDTO>
 
 }

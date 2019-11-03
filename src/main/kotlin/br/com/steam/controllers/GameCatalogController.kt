@@ -24,11 +24,18 @@ class GameCatalogController constructor(
         return ResponseEntity.ok(gameService.getAllGameReview(gameReviewSearchDTO))
     }
 
-    @GetMapping("/search")
-    fun getGames(@RequestParam(value = "key") key: Int,
-                 @RequestParam(value = "value") value: String,
-                 @RequestParam(value = "size") size: Int,
-                 @RequestParam(value = "page") page: Int): ResponseEntity<List<GameDTO>> {
+    @GetMapping("/search/{key}")
+    fun searchGames(@PathVariable key: String,
+                    @RequestParam(value = "value") value: String,
+                    @RequestParam(value = "size") size: Int,
+                    @RequestParam(value = "page") page: Int): ResponseEntity<List<GameDTO>> {
         return ResponseEntity.ok(gameService.getGames(key, value, size, page))
+    }
+
+    @GetMapping("/search")
+    fun searchGames(@RequestParam(value = "value") value: String,
+                    @RequestParam(value = "size") size: Int,
+                    @RequestParam(value = "page") page: Int): ResponseEntity<List<GameDTO>> {
+        return ResponseEntity.ok(gameService.getGames(value, size, page))
     }
 }

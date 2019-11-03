@@ -72,13 +72,22 @@ class GameServiceImpl constructor(
         return gameReviewDTOList ?: listOf(GameReviewDTO())
     }
 
-    override fun getGames(key: Int, value: String, size: Int, page: Int): List<GameDTO> {
-        val searchByEnum = SearchByEnum.getById(key) ?: return emptyList()
-
+    override fun getGames(key: String, value: String, size: Int, page: Int): List<GameDTO> {
         val pageable = PageRequest.of(page, size)
 
         val regex = ".*$value.*"
-        val query = Query().with(pageable).addCriteria(Criteria.where(searchByEnum.key).regex(regex, "i"))
+        val query = Query().with(pageable).addCriteria(Criteria.where(key).regex(regex, "i"))
+
+        val gameList = mongoTemplate.find(query, GameDetails::class.java, "steam")
+
+        return buildGameDTOList(gameList)
+    }
+
+    override fun getGames(value: String, size: Int, page: Int): List<GameDTO> {
+        val pageable = PageRequest.of(page, size)
+
+        val regex = ".*$value.*"
+        val query = Query().with(pageable).addCriteria(Criteria.where("name").regex(regex, "i"))
 
         val gameList = mongoTemplate.find(query, GameDetails::class.java, "steam")
 
