@@ -1,9 +1,6 @@
 package br.com.steam.services.interfaces
 
-import br.com.steam.dto.GameCatalogDTO
-import br.com.steam.dto.GameDTO
-import br.com.steam.dto.GameReviewDTO
-import br.com.steam.dto.GameReviewSearchDTO
+import br.com.steam.dto.*
 
 interface GameService {
 
@@ -14,5 +11,7 @@ interface GameService {
     fun getGames(key: String, value: String, size: Int, page: Int): List<GameDTO>
 
     fun getGames(value: String, size: Int, page: Int): List<GameDTO>
+
+    fun insertReview(gameName: String, newReviewDTO: NewReviewDTO): GameReviewDTO
 
 }

@@ -2,12 +2,9 @@ package br.com.steam.services.impl
 
 import br.com.steam.documents.GameDetails
 import br.com.steam.documents.GameReview
-import br.com.steam.dto.GameCatalogDTO
-import br.com.steam.dto.GameDTO
-import br.com.steam.dto.GameReviewDTO
-import br.com.steam.dto.GameReviewSearchDTO
+import br.com.steam.dto.*
 import br.com.steam.enums.GameCatalogSortEnum
-import br.com.steam.enums.SearchByEnum
+import br.com.steam.enums.RecommendationEnum
 import br.com.steam.enums.SortReviewEnum
 import br.com.steam.repositories.*
 import br.com.steam.services.interfaces.GameService
@@ -18,7 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
-
+import java.util.*
 
 @Service
 class GameServiceImpl constructor(
@@ -92,5 +89,23 @@ class GameServiceImpl constructor(
         val gameList = mongoTemplate.find(query, GameDetails::class.java, "steam")
 
         return buildGameDTOList(gameList)
+    }
+
+    override fun insertReview(gameName: String, newReviewDTO: NewReviewDTO): GameReviewDTO {
+        val recommendationEnum = RecommendationEnum.getById(newReviewDTO.recommendationId)
+
+        val review = GameReview(
+                negative = 0,
+                positive = 0,
+                hourPlayed = 0,
+                isEarlyAccessReview = false,
+                recommendation = recommendationEnum?.serverName,
+                review = newReviewDTO.review,
+                gameTitle = gameName,
+                datePosted = Date()
+        )
+
+        gameReviewRepository.save(review)
+        return review.getDTO()
     }
 }

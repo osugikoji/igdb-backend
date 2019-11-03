@@ -1,12 +1,10 @@
 package br.com.steam.controllers
 
-import br.com.steam.dto.GameCatalogDTO
-import br.com.steam.dto.GameDTO
-import br.com.steam.dto.GameReviewDTO
-import br.com.steam.dto.GameReviewSearchDTO
+import br.com.steam.dto.*
 import br.com.steam.services.interfaces.GameService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/games")
@@ -22,6 +20,12 @@ class GameCatalogController constructor(
     @PostMapping("/reviews")
     fun getAllGameReview(@RequestBody gameReviewSearchDTO: GameReviewSearchDTO): ResponseEntity<List<GameReviewDTO>> {
         return ResponseEntity.ok(gameService.getAllGameReview(gameReviewSearchDTO))
+    }
+
+    @PostMapping("/reviews/{gameName}")
+    fun insertGameReview(@PathVariable gameName: String,
+                         @Valid @RequestBody newReviewDTO: NewReviewDTO): ResponseEntity<GameReviewDTO> {
+        return ResponseEntity.ok(gameService.insertReview(gameName, newReviewDTO))
     }
 
     @GetMapping("/search/{key}")

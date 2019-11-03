@@ -9,7 +9,7 @@ import java.util.*
 @Document("steam_reviews")
 data class GameReview(
         @Id
-        val id: String?,
+        val id: String? = null,
         @Field("date_posted")
         @JsonFormat(pattern = "dd/MM/yyyy")
         val datePosted: Date?,
