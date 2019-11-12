@@ -10,4 +10,6 @@ fun GameReview.getDTO(): GameReviewDTO =
                 this.positive,
                 this.hourPlayed,
                 this.recommendation,
-                this.review)
+                this.review,
+                this.userName,
+                this.avatarId)

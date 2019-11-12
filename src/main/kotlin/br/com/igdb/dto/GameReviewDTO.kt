@@ -6,7 +6,9 @@ data class GameReviewDTO(
         val positive: Long? = null,
         val hoursPlayed: Long? = null,
         val recommendation: String? = null,
-        val review: String? = null
+        val review: String? = null,
+        val userName: String? = null,
+        val avatarId: Int? = null
 )
 
 

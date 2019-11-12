@@ -11,5 +11,7 @@ data class NewReviewDTO(
         @field:NotEmpty(message = "Preenchimento obrigatório")
         @field:NotNull(message = "Preenchimento obrigatório")
         @field:Length(min = 1, max = 256, message = "O tamanho deve ser entre 1 e 256 caracteres")
-        val review: String? = null
+        val review: String? = null,
+        val userName: String? = null,
+        val avatarId: Int? = null
 )

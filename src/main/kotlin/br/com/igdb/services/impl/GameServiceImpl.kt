@@ -102,7 +102,9 @@ class GameServiceImpl constructor(
                 recommendation = recommendationEnum?.serverName,
                 review = newReviewDTO.review,
                 gameTitle = gameName,
-                datePosted = Date()
+                datePosted = Date(),
+                userName = newReviewDTO.userName,
+                avatarId = newReviewDTO.avatarId
         )
 
         gameReviewRepository.save(review)

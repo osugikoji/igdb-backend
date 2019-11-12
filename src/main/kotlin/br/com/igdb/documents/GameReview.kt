@@ -22,5 +22,7 @@ data class GameReview(
         val recommendation: String?,
         val review: String?,
         @Field("title")
-        val gameTitle: String?
+        val gameTitle: String?,
+        val userName: String?,
+        val avatarId: Int?
 )
