@@ -13,4 +13,6 @@ interface GameReviewRepository : MongoRepository<GameReview, String> {
     @Query("{'title' : ?0 }")
     fun findByGameTitleLike(gameTitle: String?, pageable: Pageable): List<GameReview>?
 
+    fun countByGameTitle(title: String): Long
+
 }

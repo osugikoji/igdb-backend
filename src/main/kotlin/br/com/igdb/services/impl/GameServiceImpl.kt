@@ -3,9 +3,7 @@ package br.com.igdb.services.impl
 import br.com.igdb.documents.GameDetails
 import br.com.igdb.documents.GameReview
 import br.com.igdb.dto.*
-import br.com.igdb.enums.GameCatalogSortEnum
-import br.com.igdb.enums.RecommendationEnum
-import br.com.igdb.enums.SortReviewEnum
+import br.com.igdb.enums.*
 import br.com.igdb.repositories.*
 import br.com.igdb.services.interfaces.GameService
 import br.com.igdb.utility.extensions.getDTO
@@ -28,13 +26,19 @@ class GameServiceImpl constructor(
         private val gameReviewRepository: GameReviewRepository
 ) : GameService {
 
-    override fun getAllGameCatalog(): List<GameCatalogDTO> =
-            GameCatalogSortEnum.values().map { enum -> buildGameCatalog(enum) }
+    override fun getAllPublisherCatalog(): List<GameCatalogDTO> =
+            PublisherCatalogSortEnum.values().map { enum -> buildGameCatalog(enum.query, enum.description) }
 
-    private fun buildGameCatalog(gameCatalogSortEnum: GameCatalogSortEnum): GameCatalogDTO {
-        val gameList = mongoTemplate.find(gameCatalogSortEnum.query, GameDetails::class.java, "steam")
+    override fun getAllDeveloperCatalog(): List<GameCatalogDTO> =
+            DeveloperCatalogSortEnum.values().map { enum -> buildGameCatalog(enum.query, enum.description) }
+
+    override fun getAllGameCatalog(): List<GameCatalogDTO> =
+            GameCatalogSortEnum.values().map { enum -> buildGameCatalog(enum.query, enum.description) }
+
+    private fun buildGameCatalog(query: Query, description: String): GameCatalogDTO {
+        val gameList = mongoTemplate.find(query, GameDetails::class.java, "steam")
         val gameDTOList = buildGameDTOList(gameList)
-        return GameCatalogDTO(gameCatalogSortEnum.description, gameDTOList)
+        return GameCatalogDTO(description, gameDTOList)
     }
 
     private fun buildGameDTOList(gameList: List<GameDetails>): List<GameDTO> {
@@ -109,5 +113,9 @@ class GameServiceImpl constructor(
 
         gameReviewRepository.save(review)
         return review.getDTO()
+    }
+
+    override fun getReviewsNumber(title: String): Long {
+        return gameReviewRepository.countByGameTitle(title)
     }
 }

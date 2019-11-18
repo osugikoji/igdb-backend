@@ -17,9 +17,24 @@ class GameCatalogController constructor(
         return ResponseEntity.ok(gameService.getAllGameCatalog())
     }
 
+    @GetMapping("/catalog/publishers")
+    fun getAllPublishersCatalog(): ResponseEntity<List<GameCatalogDTO>> {
+        return ResponseEntity.ok(gameService.getAllPublisherCatalog())
+    }
+
+    @GetMapping("/catalog/developers")
+    fun getAllDeveloperCatalog(): ResponseEntity<List<GameCatalogDTO>> {
+        return ResponseEntity.ok(gameService.getAllDeveloperCatalog())
+    }
+
     @PostMapping("/reviews")
     fun getAllGameReview(@RequestBody gameReviewSearchDTO: GameReviewSearchDTO): ResponseEntity<List<GameReviewDTO>> {
         return ResponseEntity.ok(gameService.getAllGameReview(gameReviewSearchDTO))
+    }
+
+    @GetMapping("/reviews/{gameName}/number")
+    fun getReviewsNumber(@PathVariable gameName: String): ResponseEntity<Long> {
+        return ResponseEntity.ok(gameService.getReviewsNumber(gameName))
     }
 
     @PostMapping("/reviews/{gameName}")
